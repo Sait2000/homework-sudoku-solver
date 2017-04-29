@@ -14,12 +14,12 @@ Sudoku::Sudoku(std::istream& stream)
             {
                 if (v == std::char_traits<char>::eof())
                 {
-                    v = 0;
+                    v = EMPTY_CELL;
                     break;
                 }
                 if (v == '0' || v == '.')
                 {
-                    v = 0;
+                    v = EMPTY_CELL;
                     break;
                 }
                 if ('1' <= v && v <= '9')
@@ -181,10 +181,10 @@ SudokuSolver::SudokuSolver(int const in_board[BOARD_SIZE][BOARD_SIZE])
     {
         for (int c = 0; c < BOARD_SIZE; ++c)
         {
-            int v = in_board[r][c] - 1;
-            if (v != -1)
+            int v = in_board[r][c];
+            if (v != EMPTY_CELL)
             {
-                if (!assign({r, c}, v))
+                if (!assign({r, c}, v - 1))
                 {
                     return;
                 }
@@ -195,7 +195,7 @@ SudokuSolver::SudokuSolver(int const in_board[BOARD_SIZE][BOARD_SIZE])
     bool should_backtrack = false;
     for ( ; ; )
     {
-        // assining target & value [0..BOARD_SIZE)
+        // assining target & value
         Position p;
         int v;
 
