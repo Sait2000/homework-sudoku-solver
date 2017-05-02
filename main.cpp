@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include "sudoku.h"
 
 template <typename T>
@@ -21,17 +22,32 @@ T get_selection(std::vector<Option<T> > v)
         {
             std::cout << it->key << ": " << it->label << std::endl;
         }
+
+        std::string line;
+        std::getline(std::cin, line);
+
         int selected;
-        std::cin >> selected;
-        for (auto it = v.begin(); it != v.end(); ++it)
+        std::istringstream line_stream(line);
+
+        line_stream >> selected;
+
+        if (!line_stream.fail())
         {
-            if (it->key == selected)
+            line_stream >> std::ws;
+            if (line_stream.eof())
             {
-                return it->value;
+                for (auto it = v.begin(); it != v.end(); ++it)
+                {
+                    if (it->key == selected)
+                    {
+                        return it->value;
+                    }
+                }
             }
         }
+
         std::cout << std::endl;
-        std::cout << "Invalid option: " << selected << std::endl;
+        std::cout << "Invalid option: \"" << line << "\"" << std::endl;
         std::cout << std::endl;
     }
 }
