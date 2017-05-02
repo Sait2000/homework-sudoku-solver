@@ -196,7 +196,7 @@ SudokuSolver::SudokuSolver(int const in_board[BOARD_SIZE][BOARD_SIZE])
     for ( ; ; )
     {
         // assining target & value
-        Position p;
+        SudokuSolver::Position p;
         int v;
 
         if (should_backtrack)
@@ -205,7 +205,7 @@ SudokuSolver::SudokuSolver(int const in_board[BOARD_SIZE][BOARD_SIZE])
             {
                 return;
             }
-            CallStackRecord rec_c = backtrack();
+            SudokuSolver::CallStackRecord rec_c = backtrack();
             p = rec_c.position;
             for (v = rec_c.value + 1; v < BOARD_SIZE; ++v)
             {
@@ -235,7 +235,7 @@ SudokuSolver::SudokuSolver(int const in_board[BOARD_SIZE][BOARD_SIZE])
                         if (size < minimum_size)
                         {
                             found_target = true;
-                            p = Position {r, c};
+                            p = SudokuSolver::Position {r, c};
                             minimum_size = size;
                         }
                         break;
@@ -258,7 +258,7 @@ SudokuSolver::SudokuSolver(int const in_board[BOARD_SIZE][BOARD_SIZE])
     }
 }
 
-bool SudokuSolver::assign(Position p, int v)
+bool SudokuSolver::assign(SudokuSolver::Position p, int v)
 {
     for (int v_el = 0; v_el < BOARD_SIZE; ++v_el)
     {
@@ -274,9 +274,9 @@ bool SudokuSolver::assign(Position p, int v)
 
     while (!elimination_stack.empty())
     {
-        HistoryRecord rec = elimination_stack.back();
+        SudokuSolver::HistoryRecord rec = elimination_stack.back();
         elimination_stack.pop_back();
-        Position p = rec.position;
+        SudokuSolver::Position p = rec.position;
         int v = rec.value;
         int r = p.row;
         int c = p.col;
@@ -314,7 +314,7 @@ bool SudokuSolver::assign(Position p, int v)
     return true;
 }
 
-bool SudokuSolver::eliminate(Position p, int v)
+bool SudokuSolver::eliminate(SudokuSolver::Position p, int v)
 {
     if (!eliminated[p.row][p.col][v])
     {
@@ -339,13 +339,13 @@ bool SudokuSolver::eliminate(Position p, int v)
     return true;
 }
 
-CallStackRecord SudokuSolver::backtrack()
+SudokuSolver::CallStackRecord SudokuSolver::backtrack()
 {
-    CallStackRecord rec_c = call_stack.back();
+    SudokuSolver::CallStackRecord rec_c = call_stack.back();
     call_stack.pop_back();
     while (history.size() > rec_c.history_length)
     {
-        HistoryRecord rec_h = history.back();
+        SudokuSolver::HistoryRecord rec_h = history.back();
         history.pop_back();
         int r = rec_h.position.row;
         int c = rec_h.position.col;

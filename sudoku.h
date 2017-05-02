@@ -24,28 +24,28 @@ public:
     void hint();
 };
 
-struct Position
-{
-    int row;
-    int col;
-};
-
-struct HistoryRecord
-{
-    Position position;
-    int value;
-};
-
-struct CallStackRecord
-{
-    Position position;
-    int value;
-    std::vector<HistoryRecord>::size_type history_length;
-};
-
 class SudokuSolver
 {
 private:
+    struct Position
+    {
+        int row;
+        int col;
+    };
+
+    struct HistoryRecord
+    {
+        Position position;
+        int value;
+    };
+
+    struct CallStackRecord
+    {
+        Position position;
+        int value;
+        std::vector<HistoryRecord>::size_type history_length;
+    };
+
     // false: not eliminated
     // true: eliminated
     // !!! [0..BOARD_SIZE) !!!
