@@ -6,7 +6,7 @@
 #include "sudoku.h"
 
 template <typename T>
-struct Option
+struct MenuItem
 {
     int const key;
     std::string const label;
@@ -14,7 +14,7 @@ struct Option
 };
 
 template <typename T>
-T get_selection(std::vector<Option<T> > v)
+T get_selection(std::vector<MenuItem<T> > v)
 {
     for ( ; ; )
     {
@@ -67,12 +67,12 @@ int main()
         "+------------------+\n"
     ) << std::endl;
 
-    std::vector<Option<bool> > const intro_options = {
+    std::vector<MenuItem<bool> > const intro_options = {
         {1, "Game Start", true},
         {0, "Quit", false},
     };
 
-    std::vector<Option<bool (*)(Sudoku&)> > const loop_options = {
+    std::vector<MenuItem<bool (*)(Sudoku&)> > const loop_options = {
         {1, "Write", handler_write},
         {2, "Erase", handler_erase},
         {3, "Hint", handler_give_hint},
