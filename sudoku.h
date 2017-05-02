@@ -52,9 +52,9 @@ private:
     bool eliminated[BOARD_SIZE][BOARD_SIZE][BOARD_SIZE];
     int num_eliminated[BOARD_SIZE][BOARD_SIZE];
 
-    std::vector<CallStackRecord> call_stack;
-    std::vector<HistoryRecord> history;
-    std::vector<HistoryRecord> elimination_stack;
+    std::vector<CallStackRecord> call_stack; // backtracking information
+    std::vector<HistoryRecord> history; // elimination history
+    std::vector<HistoryRecord> elimination_stack; // list of naked single
 
     bool solution_found;
 
