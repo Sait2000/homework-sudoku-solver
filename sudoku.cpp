@@ -173,9 +173,9 @@ void Sudoku::hint()
 }
 
 SudokuSolver::SudokuSolver(int const in_board[BOARD_SIZE][BOARD_SIZE])
-: solution_found(false)
-, eliminated{}
+: eliminated{}
 , num_eliminated{}
+, solution_found(false)
 {
     for (int r = 0; r < BOARD_SIZE; ++r)
     {
