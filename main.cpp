@@ -3,7 +3,32 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <utility>
 #include "sudoku.h"
+
+std::pair<bool, int> read_int()
+{
+    std::string line;
+
+    std::cin.clear();
+    std::getline(std::cin, line);
+
+    int res;
+    std::istringstream line_stream(line);
+
+    line_stream >> res;
+
+    if (!line_stream.fail())
+    {
+        line_stream >> std::ws;
+        if (line_stream.eof())
+        {
+            return {true, res};
+        }
+    }
+
+    return {false, 0};
+}
 
 template <typename T>
 struct MenuItem
@@ -23,31 +48,21 @@ T get_selection(std::vector<MenuItem<T> > v)
             std::cout << it->key << ": " << it->label << std::endl;
         }
 
-        std::string line;
-        std::getline(std::cin, line);
-
-        int selected;
-        std::istringstream line_stream(line);
-
-        line_stream >> selected;
-
-        if (!line_stream.fail())
+        auto input = read_int();
+        if (input.first)
         {
-            line_stream >> std::ws;
-            if (line_stream.eof())
+            int selected = input.second;
+            for (auto it = v.begin(); it != v.end(); ++it)
             {
-                for (auto it = v.begin(); it != v.end(); ++it)
+                if (it->key == selected)
                 {
-                    if (it->key == selected)
-                    {
-                        return it->value;
-                    }
+                    return it->value;
                 }
             }
         }
 
         std::cout << std::endl;
-        std::cout << "Invalid option: \"" << line << "\"" << std::endl;
+        std::cout << "Invalid input" << std::endl;
         std::cout << std::endl;
     }
 }
@@ -109,16 +124,58 @@ bool handler_write(Sudoku& sudoku_instance)
     int col;
     int value;
 
-    std::cout << "Row(0-based): ";
-    std::cin >> row;
+    bool valid_input = true;
 
-    std::cout << "Column(0-based): ";
-    std::cin >> col;
+    if (valid_input)
+    {
+        std::cout << "Row(0-based): ";
+        auto row_input = read_int();
+        if (row_input.first)
+        {
+            row = row_input.second;
+        }
+        else
+        {
+            valid_input = false;
+        }
+    }
 
-    std::cout << "Value: ";
-    std::cin >> value;
+    if (valid_input)
+    {
+        std::cout << "Column(0-based): ";
+        auto col_input = read_int();
+        if (col_input.first)
+        {
+            col = col_input.second;
+        }
+        else
+        {
+            valid_input = false;
+        }
+    }
 
-    sudoku_instance.write_game_board(row, col, value);
+    if (valid_input)
+    {
+        std::cout << "Value: ";
+        auto value_input = read_int();
+        if (value_input.first)
+        {
+            value = value_input.second;
+        }
+        else
+        {
+            valid_input = false;
+        }
+    }
+
+    if (valid_input)
+    {
+        sudoku_instance.write_game_board(row, col, value);
+    }
+    else
+    {
+        std::cout << "Invalid input" << std::endl;
+    }
 
     return true;
 }
@@ -128,13 +185,44 @@ bool handler_erase(Sudoku& sudoku_instance)
     int row;
     int col;
 
-    std::cout << "Row(0-based): ";
-    std::cin >> row;
+    bool valid_input = true;
 
-    std::cout << "Column(0-based): ";
-    std::cin >> col;
+    if (valid_input)
+    {
+        std::cout << "Row(0-based): ";
+        auto row_input = read_int();
+        if (row_input.first)
+        {
+            row = row_input.second;
+        }
+        else
+        {
+            valid_input = false;
+        }
+    }
 
-    sudoku_instance.erase_game_board(row, col);
+    if (valid_input)
+    {
+        std::cout << "Column(0-based): ";
+        auto col_input = read_int();
+        if (col_input.first)
+        {
+            col = col_input.second;
+        }
+        else
+        {
+            valid_input = false;
+        }
+    }
+
+    if (valid_input)
+    {
+        sudoku_instance.erase_game_board(row, col);
+    }
+    else
+    {
+        std::cout << "Invalid input" << std::endl;
+    }
 
     return true;
 }
